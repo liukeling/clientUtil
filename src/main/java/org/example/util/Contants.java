@@ -1,4 +1,4 @@
-package org.example.util.file;
+package org.example.util;
 
 public class Contants {
     private Contants(){
@@ -12,5 +12,7 @@ public class Contants {
     public static byte[] fileNameTag = "fileName:".getBytes();
     public static byte[] fileSizeTag = "fileSize:".getBytes();
     public static byte[] fileContentTag = "fileContent:".getBytes();
+
+    public static byte[] reLineTag = "\\r\\n".getBytes();
 
 }

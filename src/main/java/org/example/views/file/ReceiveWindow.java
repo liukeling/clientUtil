@@ -1,18 +1,13 @@
 package org.example.views.file;
 
 import org.example.util.ThreadUtil;
-import org.example.util.file.FileReceiveRunnable;
+import org.example.util.io.FileReceiveRunnable;
 import org.example.views.BaseWindow;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 接收文件
