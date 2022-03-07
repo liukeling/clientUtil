@@ -19,7 +19,7 @@ public class BeginTodo implements TagTodo{
     }
 
     @Override
-    public void tagInfoTodo(byte[] info) {
-
+    public Object tagInfoTodo(byte[] info) {
+        return null;
     }
 }

@@ -1,11 +1,9 @@
 package org.example.util.handles.file.todos;
 
-import org.example.util.Contants;
 import org.example.util.enums.TagEnum;
 import org.example.util.handles.ReceiveHandleDto;
 
-public class ReLineTodo implements TagTodo {
-
+public class EndTodo implements TagTodo {
     @Override
     public void tagEndTodo(ReceiveHandleDto handleDto) {
         byte[] preTag = handleDto.getPreTag();
@@ -16,18 +14,16 @@ public class ReLineTodo implements TagTodo {
             TagEnum preTagEnum = TagEnum.findByTag(preTag);
             TagTodo tagTodo = TagTodoUtil.getTodoByTag(preTagEnum);
             Object info = tagTodo.tagInfoTodo(tmpInfo);
-            //tag内容存储
-            if(info != null){
-                handleDto.putContainerInfo(new String(preTag), info);
+            if(info != null) {
+                System.out.println("===================end============");
+            }else{
+                //当前读取到的结束标记不是真的结束了，只是碰巧
+                tagTodo.tagInfoTodo(handleDto.getTag());
+
+                handleDto.setTag(handleDto.getTag());
+                handleDto.setTagOk(false);
+                handleDto.setTmpInfo(null);
             }
-            //下个标记 - preTag不重置
-            if(preTag == Contants.fileNameTag){
-                handleDto.setTag(Contants.fileSizeTag);
-            }else if(preTag == Contants.fileSizeTag){
-                handleDto.setTag(Contants.fileContentTag);
-            }
-            handleDto.setTagOk(false);
-            handleDto.setTmpInfo(null);
         }
     }
 

@@ -15,7 +15,8 @@ public class FileSizeTodo implements TagTodo {
     }
 
     @Override
-    public void tagInfoTodo(byte[] info) {
-
+    public Object tagInfoTodo(byte[] info) {
+        String sizeStr = new String(info);
+        return Long.valueOf(sizeStr);
     }
 }

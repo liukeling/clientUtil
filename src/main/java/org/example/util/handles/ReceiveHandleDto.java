@@ -1,5 +1,8 @@
 package org.example.util.handles;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * tag匹对对象
  * @author liukeling
@@ -17,6 +20,8 @@ public class ReceiveHandleDto {
     private byte[] tag;
     /**当前匹对的tag位置 - 当前位置还未匹对*/
     private int beginIndex = 0;
+    /**内容缓存*/
+    private final Map<String, Object> container = new HashMap<>();
 
     /**上一个tag标记*/
     private byte[] preTag;
@@ -90,5 +95,12 @@ public class ReceiveHandleDto {
 
     public void setHasLast(boolean hasLast) {
         this.hasLast = hasLast;
+    }
+
+    public Object getContainerInfo(String key){
+        return container.get(key);
+    }
+    public void putContainerInfo(String key, Object info){
+        container.put(key, info);
     }
 }

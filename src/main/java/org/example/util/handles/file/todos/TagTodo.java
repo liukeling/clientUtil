@@ -13,5 +13,5 @@ public interface TagTodo {
      * 标记内容处理
      * @param info  内容
      */
-    void tagInfoTodo(byte[] info);
+    Object tagInfoTodo(byte[] info);
 }
