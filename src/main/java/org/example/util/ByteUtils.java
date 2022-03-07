@@ -12,7 +12,7 @@ public class ByteUtils {
     public static final int COMPARE_CONTINUE_FLAG = -2;
 
     /**
-     * 标记比较
+     * 标记比较 不匹配就返回，不会继续重新匹配
      *
      * @param source      标记
      * @param sourceIndex 标记比较的起始位置 - 包括这个位置
@@ -75,7 +75,7 @@ public class ByteUtils {
         }
         byte[] info = new byte[b1.length + b2.length];
         System.arraycopy(b1, 0, info, 0, b1.length);
-        System.arraycopy(b2, 0, info, b1.length, b1.length);
+        System.arraycopy(b2, 0, info, b1.length, b2.length);
         return info;
     }
 }

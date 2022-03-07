@@ -12,7 +12,8 @@ public abstract class BaseIORunnable implements Runnable {
     private boolean receiveOk = false;
     protected final InputStream ips;
     protected final OutputStream ops;
-    public BaseIORunnable(InputStream ips, OutputStream ops){
+
+    public BaseIORunnable(InputStream ips, OutputStream ops) {
         this.ips = ips;
         this.ops = ops;
     }
@@ -22,40 +23,61 @@ public abstract class BaseIORunnable implements Runnable {
      */
     @Override
     public final void run() {
-        System.out.println("=====begin receive===" + Thread.currentThread().getName());
         try {
             toSendOk(ops);
             String lastInfo = toReceiveOk(ips);
             if (helloOk()) {
                 //wait receive.....
-                System.out.println("=========lastInfo:"+lastInfo);
                 beginReceive(lastInfo.getBytes());
-            }else{
-                System.out.println(Thread.currentThread().getName()+"  hello info failed.....");
+            } else {
+                System.out.println(Thread.currentThread().getName() + "  hello info failed.....");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            if(ips != null) {
+            exceptionHandle(e);
+        } finally {
+            if (ips != null) {
                 try {
                     ips.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(ops != null) {
+            if (ops != null) {
                 try {
                     ops.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+            finallyHandle();
         }
-        System.out.println("=====exit receive====" + Thread.currentThread().getName());
     }
-    protected abstract void beginReceive(byte[] lastInfo);
+
+    /**
+     * 数据处理
+     *
+     * @param lastInfo
+     * @throws IOException
+     */
+    protected abstract void beginReceive(byte[] lastInfo) throws IOException;
+
+    /**
+     * 结束处理
+     */
+    protected abstract void finallyHandle();
+
+    /**
+     * 异常处理
+     */
+    protected void exceptionHandle(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 发送ok消息 - 通知就绪
+     *
      * @param out
      * @throws IOException
      */
@@ -66,8 +88,10 @@ public abstract class BaseIORunnable implements Runnable {
         out.flush();
         sendOK = true;
     }
+
     /**
      * 接收ok消息 - ok之后就开始
+     *
      * @param input
      * @throws IOException
      */
@@ -87,8 +111,8 @@ public abstract class BaseIORunnable implements Runnable {
         if (info.contains(beginTag) && info.contains(endTag)) {
             String okInfo = info.substring(info.indexOf(beginTag) + beginTag.length(), info.indexOf(endTag));
             receiveOk = okInfo != null && okInfo.equals(helloTag);
-            if(receiveOk){
-                String allTag = beginTag+helloTag+endTag;
+            if (receiveOk) {
+                String allTag = beginTag + helloTag + endTag;
                 return info.substring(info.indexOf(allTag) + allTag.length());
             }
         }
@@ -97,9 +121,10 @@ public abstract class BaseIORunnable implements Runnable {
 
     /**
      * 握手是否ok
+     *
      * @return
      */
-    private final boolean helloOk(){
+    protected final boolean helloOk() {
         return sendOK && receiveOk;
     }
 }

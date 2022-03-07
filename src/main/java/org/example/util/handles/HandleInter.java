@@ -1,14 +1,12 @@
 package org.example.util.handles;
 
-import org.example.util.file.ReceiveHandleDto;
-
 /**
  * @author liukeling
  */
-public interface HandleInter {
+public interface HandleInter<T extends ReceiveHandleDto> {
     /**
      * 读取的流处理
      * @param handleDto
      */
-    void handle(ReceiveHandleDto handleDto);
+    void handle(T handleDto);
 }

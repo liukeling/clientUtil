@@ -1,23 +1,31 @@
-package org.example.util.file;
+package org.example.util.handles;
 
 /**
- * 读取信息处理对象
+ * tag匹对对象
  * @author liukeling
  */
 public class ReceiveHandleDto {
+    /**读取到的流信息*/
     private byte[] tmp = new byte[100];
+    /**流的有效长度*/
     private int read;
+    /**tag是否匹配完成*/
     private boolean tagOk = false;
+    /**是否还有未处理完的字符*/
+    private boolean hasLast = false;
+    /**需要进行匹配的tag*/
     private byte[] tag;
+    /**当前匹对的tag位置 - 当前位置还未匹对*/
     private int beginIndex = 0;
 
+    /**上一个tag标记*/
     private byte[] preTag;
+    /**tag之间缓存的数据*/
     private byte[] tmpInfo;
-    public ReceiveHandleDto(byte[] tmp, int read, int beginIndex, byte[] tag, boolean tagOk){
+    public ReceiveHandleDto(byte[] tmp, int read, int beginIndex, byte[] tag){
         this.tmp = tmp;
         this.read = read;
         this.tag = tag;
-        this.tagOk = tagOk;
         this.beginIndex = beginIndex;
     }
     public byte[] getTmp() {
@@ -74,5 +82,13 @@ public class ReceiveHandleDto {
 
     public void setTmpInfo(byte[] tmpInfo) {
         this.tmpInfo = tmpInfo;
+    }
+
+    public boolean isHasLast() {
+        return hasLast;
+    }
+
+    public void setHasLast(boolean hasLast) {
+        this.hasLast = hasLast;
     }
 }
