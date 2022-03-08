@@ -1,5 +1,6 @@
 package org.example.views.file;
 
+import org.example.util.ThreadUtil;
 import org.example.views.BaseWindow;
 
 import javax.swing.*;
@@ -26,6 +27,12 @@ public class FileWindow extends BaseWindow {
         frame.validate();
         initButton();
     }
+
+    @Override
+    protected void windowClose() {
+        ThreadUtil.exit();
+    }
+
     private void initButton(){
         upper.addMouseListener(new MouseAdapter() {
             @Override
@@ -36,7 +43,7 @@ public class FileWindow extends BaseWindow {
         receive.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new FransferWindow("接收文件");
+                new ReceiveWindow("接收文件");
             }
         });
     }

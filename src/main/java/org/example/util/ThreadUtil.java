@@ -12,4 +12,7 @@ public class ThreadUtil {
     public static void execute(Runnable runnable){
         poolExecutor.execute(runnable);
     }
+    public static void exit(){
+        poolExecutor.shutdown();
+    }
 }

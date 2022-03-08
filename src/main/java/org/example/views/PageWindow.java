@@ -74,4 +74,9 @@ public class PageWindow extends BaseWindow {
             }
         });
     }
+
+    @Override
+    protected void windowClose() {
+
+    }
 }

@@ -1,5 +1,6 @@
 package org.example.util.handles.file.todos;
 
+import org.example.util.ByteUtils;
 import org.example.util.Contants;
 import org.example.util.handles.ReceiveHandleDto;
 import org.example.util.io.LocalFileUtil;
@@ -10,6 +11,7 @@ import java.io.IOException;
 public class FileContentTodo implements TagTodo {
     private ThreadLocal<String> localFileName = new ThreadLocal<>();
     private ThreadLocal<Long> localFileSize = new ThreadLocal<>();
+    private ThreadLocal<Long> localCurSize = new ThreadLocal<>();
     @Override
     public void tagEndTodo(ReceiveHandleDto handleDto) {
         //记录下此次的标记
@@ -35,9 +37,27 @@ public class FileContentTodo implements TagTodo {
     public Object tagInfoTodo(byte[] info) {
         String fileName = localFileName.get();
         Long fileSize = localFileSize.get();
+        Long curSize = localCurSize.get();
+        curSize = curSize == null ? 0 : curSize;
         try {
             if(info != null && info.length > 0) {
-                LocalFileUtil.write(fileName, info);
+                byte[] bytes = info;
+                if(info.length > fileSize - curSize){
+                    int length = Long.valueOf(fileSize - curSize).intValue();
+                    if(length <= 0){
+                        bytes = null;
+                    }else {
+                        bytes = ByteUtils.subBytes(0, length, info);
+                    }
+                }
+                if(bytes != null && bytes.length > 0) {
+                    LocalFileUtil.write(fileName, bytes);
+                    curSize = curSize + bytes.length;
+                    localFileSize.set(curSize);
+                }
+                if(curSize.compareTo(fileSize) == 0){
+                    return "end";
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

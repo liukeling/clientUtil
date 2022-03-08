@@ -15,11 +15,12 @@ public class EndTodo implements TagTodo {
             TagTodo tagTodo = TagTodoUtil.getTodoByTag(preTagEnum);
             Object info = tagTodo.tagInfoTodo(tmpInfo);
             if(info != null) {
+                handleDto.setTagOk(true);
+                handleDto.setHasLast(false);
                 System.out.println("===================end============");
             }else{
                 //当前读取到的结束标记不是真的结束了，只是碰巧
                 tagTodo.tagInfoTodo(handleDto.getTag());
-
                 handleDto.setTag(handleDto.getTag());
                 handleDto.setTagOk(false);
                 handleDto.setTmpInfo(null);

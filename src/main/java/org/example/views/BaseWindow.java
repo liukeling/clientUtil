@@ -14,7 +14,8 @@ public abstract class BaseWindow {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                System.exit(1);
+                frame.dispose();
+                windowClose();
             }
         });
     }
@@ -22,5 +23,5 @@ public abstract class BaseWindow {
         frame.removeAll();
         frame.repaint();
     }
-
+    protected abstract void windowClose();
 }
