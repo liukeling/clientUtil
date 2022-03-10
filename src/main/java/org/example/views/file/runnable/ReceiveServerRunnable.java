@@ -2,8 +2,10 @@ package org.example.views.file.runnable;
 
 import org.example.util.ThreadUtil;
 import org.example.util.io.FileReceiveRunnable;
+import org.example.views.SyncList;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,8 +16,10 @@ import java.net.Socket;
 public class ReceiveServerRunnable implements Runnable {
     private ServerSocket server;
     private JTextField infoShow;
-    public ReceiveServerRunnable(JTextField infoShow){
+    private SyncList list;
+    public ReceiveServerRunnable(JTextField infoShow, SyncList list){
         this.infoShow = infoShow;
+        this.list = list;
     }
     @Override
     public void run() {
@@ -26,7 +30,7 @@ public class ReceiveServerRunnable implements Runnable {
             }
             while(!server.isClosed()){
                 Socket socket = server.accept();
-                ThreadUtil.execute(new FileReceiveRunnable(socket));
+                ThreadUtil.execute(new FileReceiveRunnable(socket, list));
             }
 
         } catch (Exception e) {
