@@ -17,6 +17,7 @@ public class EndTodo implements TagTodo {
             if(info != null) {
                 handleDto.setTagOk(true);
                 handleDto.setHasLast(false);
+                handleDto.setEnd(true);
                 System.out.println("===================end============");
             }else{
                 //当前读取到的结束标记不是真的结束了，只是碰巧

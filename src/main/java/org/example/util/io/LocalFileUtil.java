@@ -51,12 +51,20 @@ public class LocalFileUtil {
                 file = new File(baseFilePath + File.separator + fileName);
             }
             int i = 1;
+            String name = fileName;
+            String backInfo = "";
+            if(fileName.contains(".")){
+                name = fileName.substring(0, fileName.indexOf("."));
+                backInfo = fileName.substring(fileName.indexOf("."));
+            }
+            String newName = "";
             while (file.exists()) {
-                fileName = fileName + i;
-                file = new File(baseFilePath + File.separator + fileName);
+                newName = name +"("+i+")";
+                file = new File(baseFilePath + File.separator + newName+backInfo);
+                i++;
             }
             file.createNewFile();
-            TMP_LOCAL_FILES.put(fileName, file);
+            TMP_LOCAL_FILES.put(newName+backInfo, file);
             return file;
         }
     }

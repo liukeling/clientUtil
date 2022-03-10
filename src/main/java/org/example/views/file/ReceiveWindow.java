@@ -15,15 +15,17 @@ import java.awt.*;
 public class ReceiveWindow extends BaseWindow {
     private JTextField infoShow = new JTextField("padding...");
     private SyncList list = new SyncList();
-    private GridLayout gridLayout = new GridLayout(4,1);
+    private BorderLayout borderLayout = new BorderLayout();
+
     private ReceiveServerRunnable serverRun = new ReceiveServerRunnable(infoShow, list);
+
     public ReceiveWindow(String title) {
         super(title);
-        frame.setSize(500,400);
-        frame.setLayout(gridLayout);
+        frame.setSize(500, 400);
+        frame.setLayout(borderLayout);
         clean();
-        frame.add(infoShow);
-        frame.add(list.getView());
+        frame.add(infoShow, BorderLayout.NORTH);
+        frame.add(list.getView(), BorderLayout.CENTER);
         infoShow.setEditable(false);
         frame.validate();
         initReceive();
@@ -36,14 +38,14 @@ public class ReceiveWindow extends BaseWindow {
 
     @Override
     protected boolean windowCanClose() {
-            boolean taskOK = list.getItemCount() == 0;
-            if(!taskOK) {
-                new InfoWindow("info", "please wait,task has run...");
-            }
-            return taskOK;
+        boolean taskOK = list.getItemCount() == 0;
+        if (!taskOK) {
+            new InfoWindow("info", "please wait,task has run...");
+        }
+        return taskOK;
     }
 
-    private void initReceive(){
+    private void initReceive() {
         ThreadUtil.execute(serverRun);
     }
 }

@@ -1,7 +1,9 @@
 package org.example.util.io;
 
 import org.example.util.Contants;
+import org.example.util.StringUtil;
 import org.example.util.handles.ReceiveHandleDto;
+import org.example.util.handles.file.FileContant;
 import org.example.util.handles.file.FileHandler;
 import org.example.views.SyncList;
 
@@ -51,7 +53,15 @@ public class FileReceiveRunnable extends BaseIORunnable {
             if (read > 0) {
                 handleDto.setTmp(tmp);
                 handleDto.setRead(read);
+
+                String info = FileContant.calCurProcess();
+                if(list != null && StringUtil.isNotEmpty(info)){
+                    list.putInfo(taskId, info);
+                }
                 fileHandler.handle(handleDto);
+                if(handleDto.isEnd()){
+                    break;
+                }
             }
         } while ((read = ips.read(tmp)) != -1);
     }

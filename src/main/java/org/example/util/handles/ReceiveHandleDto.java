@@ -16,6 +16,7 @@ public class ReceiveHandleDto {
     private boolean tagOk = false;
     /**是否还有未处理完的字符*/
     private boolean hasLast = false;
+    private boolean end = false;
     /**需要进行匹配的tag*/
     private byte[] tag;
     /**当前匹对的tag位置 - 当前位置还未匹对*/
@@ -102,5 +103,13 @@ public class ReceiveHandleDto {
     }
     public void putContainerInfo(String key, Object info){
         container.put(key, info);
+    }
+
+    public boolean isEnd() {
+        return end;
+    }
+
+    public void setEnd(boolean end) {
+        this.end = end;
     }
 }
