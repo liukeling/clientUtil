@@ -1,5 +1,7 @@
 package org.example.util.io;
 
+import org.example.util.StringUtil;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +71,12 @@ public class LocalFileUtil {
         }
     }
 
+    /**
+     * 文件写入
+     * @param fileName
+     * @param info
+     * @throws IOException
+     */
     public static void write(String fileName, byte[] info) throws IOException {
         File file = null;
         synchronized (TMP_LOCAL_FILES) {
@@ -86,5 +94,15 @@ public class LocalFileUtil {
                 }
             }
         }
+    }
+
+    public static File[] getPathFiles(String path){
+        if(StringUtil.isNotEmpty(path)){
+            File dir = new File(path);
+            if(dir.exists() && dir.isDirectory()){
+                return dir.listFiles();
+            }
+        }
+        return null;
     }
 }
