@@ -10,12 +10,16 @@ public class SyncList {
     Map<String, String> infos = new HashMap<>();
     public String putInfo(String taskId, String info){
         synchronized (lock) {
-            String preInfo = infos.put(taskId, info);
-            if(preInfo != null){
-                view.remove(preInfo);
+            String cur = infos.get(taskId);
+            if(cur == null || info == null || !cur.equals(info)) {
+                String preInfo = infos.put(taskId, info);
+                if (preInfo != null) {
+                    view.remove(preInfo);
+                }
+                view.add(info);
+                return preInfo;
             }
-            view.add(info);
-            return preInfo;
+            return cur;
         }
     }
     public String removeInfo(String taskId){

@@ -9,7 +9,6 @@ import java.io.File;
 
 public class App {
     public static void main(String[] args) {
-        new ReceiveWindow("test");
-        new FransferInfoWindow(new File("D:\\2eeebce0ba13d93160a42c436e9cc69a.jpeg"));
+        new FileWindow("文件传输");
     }
 }
