@@ -39,9 +39,11 @@ public class FransferWindow extends BaseWindow {
         clean();
         frame.setLayout(borderLayout);
         JPanel jPanel = new JPanel();
-        jPanel.add(info);
-        jPanel.add(textField);
-        jPanel.add(button);
+        BorderLayout searchLayout = new BorderLayout();
+        jPanel.setLayout(searchLayout);
+        jPanel.add(info, BorderLayout.WEST);
+        jPanel.add(textField, BorderLayout.CENTER);
+        jPanel.add(button, BorderLayout.EAST);
         frame.add(jPanel, BorderLayout.NORTH);
         frame.add(list, BorderLayout.CENTER);
         frame.validate();
