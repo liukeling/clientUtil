@@ -9,6 +9,8 @@ import org.example.views.SyncList;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -18,13 +20,10 @@ public class FileReceiveRunnable extends BaseIORunnable {
     private static final FileHandler fileHandler = new FileHandler();
     private static final int readSize = 100;
     private final Socket socket;
-    private final SyncList list;
-    private final String taskId = UUID.randomUUID().toString().replace("-","");
 
-    public FileReceiveRunnable(Socket socket, SyncList list) throws IOException {
+    public FileReceiveRunnable(Socket socket) throws IOException {
         super(socket.getInputStream(), socket.getOutputStream());
         this.socket = socket;
-        this.list = list;
     }
 
     /**
@@ -33,7 +32,7 @@ public class FileReceiveRunnable extends BaseIORunnable {
      * @param preInfos
      */
     @Override
-    protected void beginReceive(byte[] preInfos) throws IOException {
+    protected void ioHandle(byte[] preInfos) throws IOException {
         int read = 0;
         byte[] tmp;
         byte[] tag = Contants.beginTag;
@@ -46,19 +45,21 @@ public class FileReceiveRunnable extends BaseIORunnable {
             tmp = new byte[readSize];
         }
         ReceiveHandleDto handleDto = new ReceiveHandleDto(tmp, read, beginIndex, tag);
-        if(list != null) {
-            list.putInfo(taskId, "begin receive.....");
-        }
+
         do {
             if (read > 0) {
                 handleDto.setTmp(tmp);
                 handleDto.setRead(read);
 
-                String info = FileContant.calCurProcess();
-                if(list != null && StringUtil.isNotEmpty(info)){
-                    list.putInfo(taskId, info);
-                }
                 fileHandler.handle(handleDto);
+
+                if(processListner != null) {
+                    String info = FileContant.calCurProcess();
+                    Map<String, Object> processInfo = new HashMap<>(2);
+                    processInfo.put("info", info);
+                    processInfo.put("taskId", taskId);
+                    processListner.updateProcess(processInfo);
+                }
                 if(handleDto.isEnd()){
                     break;
                 }
@@ -75,8 +76,12 @@ public class FileReceiveRunnable extends BaseIORunnable {
                 e.printStackTrace();
             }
         }
-        if(list != null) {
-            list.removeInfo(taskId);
+        if(processListner != null){
+            Map<String, Object> processInfo = new HashMap<>(2);
+            String info = FileContant.calCurProcess();
+            processInfo.put("info", info);
+            processInfo.put("taskId", taskId);
+            processListner.end(processInfo);
         }
     }
 }

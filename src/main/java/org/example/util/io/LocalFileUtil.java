@@ -59,7 +59,7 @@ public class LocalFileUtil {
                 name = fileName.substring(0, fileName.indexOf("."));
                 backInfo = fileName.substring(fileName.indexOf("."));
             }
-            String newName = "";
+            String newName = name;
             while (file.exists()) {
                 newName = name +"("+i+")";
                 file = new File(baseFilePath + File.separator + newName+backInfo);

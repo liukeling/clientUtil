@@ -13,6 +13,6 @@ public class Contants {
     public static byte[] fileSizeTag = "fileSize:".getBytes();
     public static byte[] fileContentTag = "fileContent:".getBytes();
 
-    public static byte[] reLineTag = "\\r\\n".getBytes();
+    public static byte[] reLineTag = "\r\n".getBytes();
 
 }

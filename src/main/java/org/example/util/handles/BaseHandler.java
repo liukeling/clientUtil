@@ -26,8 +26,7 @@ public abstract class BaseHandler<T extends ReceiveHandleDto> implements HandleI
             handleDto.setBeginIndex(0);
             {
                 //记录未读取处理的部分
-                int nextIndex = flags[1];
-                nextIndex = nextIndex == handleDto.getBeginIndex() ? nextIndex + 1 : nextIndex;
+                int nextIndex = flags[1] + 1;
                 nextByte = ByteUtils.subBytes(nextIndex, read, tmp);
             }
             {

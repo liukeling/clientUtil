@@ -94,7 +94,7 @@ public class FransferWindow extends BaseWindow {
             files = file.listFiles();
             listShow();
         }else{
-
+            new FransferInfoWindow(file);
         }
     }
 }

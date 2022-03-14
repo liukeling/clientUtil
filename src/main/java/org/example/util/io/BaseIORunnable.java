@@ -1,10 +1,12 @@
 package org.example.util.io;
 
 import org.example.util.Contants;
+import org.example.util.listener.ProcessListner;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.UUID;
 
 public abstract class BaseIORunnable implements Runnable {
 
@@ -12,6 +14,8 @@ public abstract class BaseIORunnable implements Runnable {
     private boolean receiveOk = false;
     protected final InputStream ips;
     protected final OutputStream ops;
+    protected ProcessListner processListner;
+    protected final String taskId = UUID.randomUUID().toString().replace("-","");
 
     public BaseIORunnable(InputStream ips, OutputStream ops) {
         this.ips = ips;
@@ -28,7 +32,7 @@ public abstract class BaseIORunnable implements Runnable {
             String lastInfo = toReceiveOk(ips);
             if (helloOk()) {
                 //wait receive.....
-                beginReceive(lastInfo.getBytes());
+                ioHandle(lastInfo.getBytes());
             } else {
                 System.out.println(Thread.currentThread().getName() + "  hello info failed.....");
             }
@@ -59,7 +63,7 @@ public abstract class BaseIORunnable implements Runnable {
      * @param lastInfo
      * @throws IOException
      */
-    protected abstract void beginReceive(byte[] lastInfo) throws IOException;
+    protected abstract void ioHandle(byte[] lastInfo) throws IOException;
 
     /**
      * 结束处理
@@ -126,5 +130,13 @@ public abstract class BaseIORunnable implements Runnable {
      */
     protected final boolean helloOk() {
         return sendOK && receiveOk;
+    }
+
+    public ProcessListner getProcessListner() {
+        return processListner;
+    }
+
+    public void setProcessListner(ProcessListner processListner) {
+        this.processListner = processListner;
     }
 }

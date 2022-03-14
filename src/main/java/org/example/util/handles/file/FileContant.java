@@ -36,6 +36,7 @@ public class FileContant {
     public static Long getCurSize() {
         return localCurSize.get();
     }
+
     public static String calCurProcess(){
         String fileName = localFileName.get();
         Long fileSize = localFileSize.get();
