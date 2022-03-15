@@ -1,5 +1,6 @@
 package org.example.views.file;
 
+import org.example.util.Contants;
 import org.example.util.ProcessUtil;
 import org.example.util.ThreadUtil;
 import org.example.util.listener.adapter.ProcessListnerAdapter;
@@ -18,8 +19,8 @@ import java.util.Map;
 
 public class FransferInfoWindow extends BaseWindow {
     private BorderLayout layout = new BorderLayout();
-    private JTextField ipFiled = new JTextField("localhost", 10);
-    private JTextField portFiled = new JTextField("1818", 10);
+    private JTextField ipFiled = new JTextField(Contants.defaultIp, 10);
+    private JTextField portFiled = new JTextField(String.valueOf(Contants.port), 10);
     private JLabel processLable = new JLabel();
     private JButton send = new JButton("确定");
     private FileTransferRunnable transferRunnable = null;
@@ -30,6 +31,7 @@ public class FransferInfoWindow extends BaseWindow {
         this.readyFile = readyFile;
         frame.setSize(500, 300);
         initFrame();
+        setLocation();
         send.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

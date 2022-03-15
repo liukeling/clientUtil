@@ -25,6 +25,7 @@ public class FileWindow extends BaseWindow {
             }
         }
         frame.validate();
+        setLocation();
         initButton();
     }
 

@@ -1,5 +1,6 @@
 package org.example.views.file.runnable;
 
+import org.example.util.Contants;
 import org.example.util.ThreadUtil;
 import org.example.util.io.FileReceiveRunnable;
 import org.example.util.listener.adapter.ProcessListnerAdapter;
@@ -25,7 +26,7 @@ public class ReceiveServerRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            server =  new ServerSocket(1818);
+            server =  new ServerSocket(Contants.port);
             if(infoShow != null) {
                 infoShow.setText("接收就绪");
             }

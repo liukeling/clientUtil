@@ -9,6 +9,7 @@ public class InfoWindow extends BaseWindow {
         super(title);
         frame.setSize(200,100);
         frame.add(new JTextField(info));
+        setLocation();
     }
 
     @Override

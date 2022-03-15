@@ -22,10 +22,16 @@ public abstract class BaseWindow {
         frame.setVisible(true);
         frame.setSize(400,600);
         frame.addWindowListener(windowClosing);
+        setLocation();
     }
     protected void clean(){
         frame.removeAll();
         frame.repaint();
+    }
+    protected void setLocation(){
+
+        Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation((int)(screensize.getWidth()-frame.getWidth())/2,(int)(screensize.getHeight()-frame.getHeight())/2);
     }
     protected abstract void windowClose();
 

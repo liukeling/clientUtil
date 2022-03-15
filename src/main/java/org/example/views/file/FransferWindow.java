@@ -47,6 +47,7 @@ public class FransferWindow extends BaseWindow {
         frame.add(jPanel, BorderLayout.NORTH);
         frame.add(list, BorderLayout.CENTER);
         frame.validate();
+        setLocation();
 
         button.addMouseListener(new MouseAdapter() {
             @Override

@@ -28,6 +28,7 @@ public class ReceiveWindow extends BaseWindow {
         frame.add(list.getView(), BorderLayout.CENTER);
         infoShow.setEditable(false);
         frame.validate();
+        setLocation();
         initReceive();
     }
 

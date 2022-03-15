@@ -1,20 +1,20 @@
 package org.example.util.io;
 
 import org.example.util.ByteUtils;
+import org.example.util.Contants;
 import org.example.util.ThreadUtil;
 import org.example.util.listener.ProcessListner;
 import org.example.util.queue.HandleQueue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class IOHandleThreadUtil {
 
-    private final HandleQueue<byte[]> queue = new HandleQueue<>(30);
+    private final HandleQueue<byte[]> queue = new HandleQueue<>(Contants.queueSize);
 
     //输入、输出流、是否运行
     private final FileInputStream ips;
@@ -39,7 +39,7 @@ public class IOHandleThreadUtil {
     private Runnable FRANS_PUT = new Runnable() {
         @Override
         public void run() {
-            byte[] tmp = new byte[1024];
+            byte[] tmp = new byte[Contants.readSize];
             int len;
             try {
                 while ((len = ips.read(tmp)) != -1) {

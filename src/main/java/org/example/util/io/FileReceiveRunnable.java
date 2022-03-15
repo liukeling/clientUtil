@@ -1,7 +1,6 @@
 package org.example.util.io;
 
 import org.example.util.Contants;
-import org.example.util.StringUtil;
 import org.example.util.handles.ReceiveHandleDto;
 import org.example.util.handles.file.FileContant;
 import org.example.util.handles.file.FileHandler;
@@ -16,7 +15,6 @@ import java.util.Map;
  */
 public class FileReceiveRunnable extends BaseIORunnable {
     private static final FileHandler fileHandler = new FileHandler();
-    private static final int readSize = 1024;
     private final Socket socket;
 
     public FileReceiveRunnable(Socket socket) throws IOException {
@@ -40,7 +38,7 @@ public class FileReceiveRunnable extends BaseIORunnable {
             tmp = preInfos;
             read = tmp.length;
         } else {
-            tmp = new byte[readSize];
+            tmp = new byte[Contants.readSize];
         }
         ReceiveHandleDto handleDto = new ReceiveHandleDto(tmp, read, beginIndex, tag);
 

@@ -21,7 +21,7 @@ public class FileHandler extends BaseHandler {
                 //文件内容读取缓存超过1Kb就处理一次，再情况缓存
                 byte[] tag = handleDto.getTag();
                 if(tag == Contants.endTag && handleDto.getPreTag() == Contants.fileContentTag
-                        && handleDto.getTmpInfo() != null && handleDto.getTmpInfo().length > 10240){
+                        && handleDto.getTmpInfo() != null && handleDto.getTmpInfo().length > Contants.readSize){
                     TagEnum tagEnum = TagEnum.findByTag(handleDto.getPreTag());
                     //标记内容处理
                     TagTodo todoByTag = TagTodoUtil.getTodoByTag(tagEnum);

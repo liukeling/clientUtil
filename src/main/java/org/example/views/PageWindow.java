@@ -19,6 +19,7 @@ public class PageWindow extends BaseWindow {
         this.componentMap = componentMap;
         initComponentList();
         initPage(0);
+        setLocation();
         initNextPre();
     }
     private void initComponentList(){

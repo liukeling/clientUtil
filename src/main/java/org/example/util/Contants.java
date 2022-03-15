@@ -15,4 +15,8 @@ public class Contants {
 
     public static byte[] reLineTag = "\r\n".getBytes();
 
+    public static int port = 1818;
+    public static int queueSize = 30;
+    public static int readSize = 1024;
+    public static String defaultIp = "localhost";
 }
