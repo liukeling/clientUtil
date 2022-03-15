@@ -57,7 +57,7 @@ public class FileContentTodo implements TagTodo {
                     return "end";
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

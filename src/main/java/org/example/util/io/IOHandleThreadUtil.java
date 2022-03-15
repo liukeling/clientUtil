@@ -5,6 +5,7 @@ import org.example.util.ThreadUtil;
 import org.example.util.listener.ProcessListner;
 import org.example.util.queue.HandleQueue;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,7 +17,7 @@ public class IOHandleThreadUtil {
     private final HandleQueue<byte[]> queue = new HandleQueue<>(30);
 
     //输入、输出流、是否运行
-    private final InputStream ips;
+    private final FileInputStream ips;
     private final OutputStream ops;
     private boolean hasRun = true;
     private Object lock = new Object();
@@ -28,7 +29,7 @@ public class IOHandleThreadUtil {
     private long curSend = 0;
     private ProcessListner processListner;
 
-    public IOHandleThreadUtil(InputStream ips, OutputStream ops, boolean ipsClose, boolean opsClose) {
+    public IOHandleThreadUtil(FileInputStream ips, OutputStream ops, boolean ipsClose, boolean opsClose) {
         this.ips = ips;
         this.ops = ops;
         this.ipsClose = ipsClose;
@@ -120,17 +121,24 @@ public class IOHandleThreadUtil {
     public void start() {
         start(null);
     }
+
     public void start(ProcessListner processListner) {
         this.processListner = processListner;
         if(processListner != null){
             processListner.begin(null);
         }
-        ThreadUtil.execute(FRANS_PUT);
+        if(ips != null) {
+            ThreadUtil.execute(FRANS_PUT);
+        }
         ThreadUtil.execute(FRANS_SEND);
     }
     public void stop(){
         synchronized (lock) {
             hasRun = false;
         }
+    }
+
+    public HandleQueue<byte[]> getQueue() {
+        return queue;
     }
 }

@@ -112,7 +112,7 @@ public class HandleQueue<T> {
         }
     }
 
-    private static class Item<T>{
+    private class Item<T>{
         T t;
     }
 }

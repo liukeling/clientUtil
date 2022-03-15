@@ -1,7 +1,13 @@
 package org.example.util.handles.file.todos;
 
+import org.example.util.Contants;
 import org.example.util.enums.TagEnum;
 import org.example.util.handles.ReceiveHandleDto;
+import org.example.util.handles.file.FileContant;
+import org.example.util.io.LocalFileUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EndTodo implements TagTodo {
     @Override
@@ -18,7 +24,8 @@ public class EndTodo implements TagTodo {
                 handleDto.setTagOk(true);
                 handleDto.setHasLast(false);
                 handleDto.setEnd(true);
-                System.out.println("===================end============");
+                String fileName = FileContant.getFileName();
+                LocalFileUtil.stopWrite(fileName);
             }else{
                 //当前读取到的结束标记不是真的结束了，只是碰巧
                 tagTodo.tagInfoTodo(handleDto.getTag());
