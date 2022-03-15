@@ -1,6 +1,8 @@
 package org.example.util.io;
 
 import org.example.util.Contants;
+import org.example.util.listener.ProcessListner;
+import org.example.util.listener.adapter.ProcessListnerAdapter;
 
 import javax.swing.*;
 import java.io.File;
@@ -9,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FileTransferRunnable extends BaseIORunnable {
     private File sendFile;
@@ -23,23 +26,29 @@ public class FileTransferRunnable extends BaseIORunnable {
     @Override
     protected void ioHandle(byte[] lastInfo) throws IOException {
         sendFileInfo();
-        long fileSize = sendFile.length();
-        long curSend = 0;
         ops.write(Contants.fileContentTag);
         FileInputStream fis = new FileInputStream(sendFile);
-        byte[] tmp = new byte[10];
-        int len;
-        while((len = fis.read(tmp)) != -1){
-            ops.write(tmp,0, len);
-            ops.flush();
-            curSend += len;
-            try {
-                setProcess(Long.valueOf(curSend * 100 / fileSize).intValue());
-            }catch (Exception e){
 
+        IOHandleThreadUtil ioSendUtil = new IOHandleThreadUtil(fis, ops, true, false);
+        ProcessListner listner = new ProcessListnerAdapter(){
+            @Override
+            public void updateProcess(Map<String, Object> processInfo) {
+                Object info = processInfo.get("info");
+                if(info != null){
+                    setProcess(Long.valueOf(Long.valueOf(info.toString()) * 100 / sendFile.length()).intValue());
+                }
+            }
+        };
+        ioSendUtil.start(listner);
+        synchronized (ioSendUtil) {
+            try {
+                ioSendUtil.wait();
+            }catch (Exception e){
+                e.printStackTrace();
+                ioSendUtil.stop();
             }
         }
-        fis.close();
+        System.out.println("=====wait end====");
         ops.write(Contants.endTag);
         ops.flush();
     }
