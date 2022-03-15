@@ -48,7 +48,6 @@ public class FileTransferRunnable extends BaseIORunnable {
                 ioSendUtil.stop();
             }
         }
-        System.out.println("=====wait end====");
         ops.write(Contants.endTag);
         ops.flush();
     }

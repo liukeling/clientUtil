@@ -11,12 +11,14 @@ public class HandleQueue<T> {
     private int sendIndex;
     //队列是否满了
     private boolean full = false;
+    //队列是否空了
+    private boolean queueNull = true;
     //是否处于等待
     private boolean sendWait = false;
     private boolean putWait = false;
 
     public HandleQueue(int size){
-        queue = new Item[]{};
+        queue = new Item[size];
         sendIndex = queue.length - 1;
     }
     /**
@@ -39,6 +41,12 @@ public class HandleQueue<T> {
                 putWait = false;
                 lock.notify();
             }
+            //队列空了
+            int next = sendIndex == queue.length - 1 ? 0 : sendIndex + 1;
+            if(queue[next] == null){
+                queueNull = true;
+            }
+
             return cur.t;
         }
     }
@@ -63,6 +71,10 @@ public class HandleQueue<T> {
             if(sendWait) {
                 sendWait = false;
                 lock.notify();
+            }
+            //队列不为空
+            if(queueNull){
+                queueNull = false;
             }
             if (full) {
                 //满了，等待
@@ -93,6 +105,13 @@ public class HandleQueue<T> {
             sendIndex ++;
         }
     }
+
+    public boolean isEmpty(){
+        synchronized (lock){
+            return queueNull;
+        }
+    }
+
     private static class Item<T>{
         T t;
     }
