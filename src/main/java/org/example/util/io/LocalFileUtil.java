@@ -127,7 +127,4 @@ public class LocalFileUtil {
         }
         return null;
     }
-    public static Map getTest(){
-        return FILE_WRITES;
-    }
 }
