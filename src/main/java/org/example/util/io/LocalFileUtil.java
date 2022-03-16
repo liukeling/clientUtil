@@ -96,10 +96,8 @@ public class LocalFileUtil {
 
         synchronized (FILE_WRITES) {
             IOHandleThreadUtil fileHandle = FILE_WRITES.get(fileName);
-            if (fileHandle != null) {
-                HandleQueue<byte[]> queue = fileHandle.getQueue();
-                queue.put(info);
-            } else {
+            if (fileHandle == null) {
+
                 if (file != null) {
                     synchronized (file) {
                         if (file.exists() && file.isFile()) {
@@ -112,6 +110,10 @@ public class LocalFileUtil {
                         }
                     }
                 }
+            }
+            if(fileHandle != null) {
+                HandleQueue<byte[]> queue = fileHandle.getQueue();
+                queue.put(info);
             }
         }
     }
