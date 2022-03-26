@@ -1,31 +1,27 @@
 package org.example.views;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class PageWindow extends BaseWindow {
     private final GridLayout gridLayout = new GridLayout(3,3);
-    private final Map<String, Component> componentMap;
     private java.util.List<Component> componentList;
-    private final Button next = new Button("next"),pre = new Button("pre");
+    private final JButton next = new JButton("下一页"),pre = new JButton("上一页");
     private int curPage = 0;
-    public PageWindow(String title, Map<String, Component> componentMap) {
+    public PageWindow(String title, List<Component> componentList) {
         super(title);
+        frame.setSize(500,400);
         frame.setLayout(gridLayout);
-        this.componentMap = componentMap;
-        initComponentList();
+        this.componentList = componentList;
         initPage(0);
         setLocation();
         initNextPre();
-    }
-    private void initComponentList(){
-        Collection<Component> values = componentMap.values();
-        componentList = new ArrayList<>(values.size());
-        componentList.addAll(values);
     }
     private void initPage(int pageBackType){
         curPage = curPage < 0 ? 0 : curPage;
@@ -44,14 +40,14 @@ public class PageWindow extends BaseWindow {
         clean();
         for (int i = 0,j = 0; i < 9; i++) {
             if(i == 6 || i == 8){
-                frame.add(i == 6 ? pre : next);
+                addView(i == 6 ? pre : next, -1);
             }else{
                 int index = i > 6 ? i - 1 : i;
                 if(j < size) {
-                    frame.add(componentList.get(index + (curPage * 7)),i);
+                    addView(componentList.get(index + (curPage * 7)),i);
                     j++;
                 }else{
-                    frame.add(new Container());
+                    addView(new Container(), -1);
                 }
             }
         }
@@ -61,7 +57,6 @@ public class PageWindow extends BaseWindow {
         next.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
                 curPage ++;
                 initPage(0);
             }
@@ -69,13 +64,17 @@ public class PageWindow extends BaseWindow {
         pre.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
                 curPage --;
                 initPage(1);
             }
         });
     }
-
+    private void addView(Component view, int index){
+        Container container = new Container();
+        container.setLayout(new BorderLayout());
+        container.add(view,BorderLayout.CENTER);
+        frame.add(container, index);
+    }
     @Override
     protected void windowClose() {
 
